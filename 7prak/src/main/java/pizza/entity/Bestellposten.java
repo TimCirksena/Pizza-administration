@@ -18,8 +18,9 @@ public class Bestellposten extends PanacheEntityBase {
     private long postenID;
     @Column
     private int menge;
-    @Column
-    @OneToOne
+
+    @OneToOne(cascade = CascadeType.MERGE)
+
     private Pizza pizza;
 
     public Bestellposten(){}

@@ -14,6 +14,7 @@ public class Pizza extends PanacheEntityBase {
             allocationSize = 1,
             initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PizzaSequence")
+    @Basic(optional = false)
     private long pizzaID;
     @Column
     private float groesse;
