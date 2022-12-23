@@ -1,18 +1,19 @@
 package pizza.entity;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Entity
 @Cacheable
-public class Adresse {
+public class Adresse extends PanacheEntity {
     @Column
     private String plz;
     @Column
     private String ort;
-    @Column @Id
+    @Column
     private String strasseUndHausnummer;
 
     public Adresse(){}

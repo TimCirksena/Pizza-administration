@@ -1,11 +1,13 @@
 package pizza.entity;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
 @Cacheable
-public class Bestellung {
+public class Bestellung extends PanacheEntityBase {
     @Id
     @SequenceGenerator(
             name = "BestellungSequence",
