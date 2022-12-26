@@ -10,7 +10,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.List;
 @ApplicationScoped
-public class PizzaController {
+public class PizzaController implements PizzaInterface{
 
     @Inject
     PizzaCatalog pizzaRepo;

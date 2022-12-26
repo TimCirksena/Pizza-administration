@@ -27,8 +27,16 @@ public class Pizza extends PanacheEntityBase {
 
     public Pizza(){}
 
-    public Pizza(long pizzaID, float groesse, String beschreibung, String name, double preis) {
-        this.pizzaID = pizzaID;
+    public static void add(float groesse, String beschreibung, String name, double preis){
+        Pizza pizza = new Pizza();
+        pizza.groesse = groesse;
+        pizza.beschreibung = beschreibung;
+        pizza.name = name;
+        pizza.preis = preis;
+        pizza.persist();
+    }
+
+    public Pizza(float groesse, String beschreibung, String name, double preis) {
         this.groesse = groesse;
         this.beschreibung = beschreibung;
         this.name = name;
