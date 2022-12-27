@@ -1,6 +1,6 @@
 package pizza.boundary.rest;
 
-import pizza.entity.PizzaCatalog;
+import pizza.control.PizzaInterface;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class PizzaResource {
     @Inject
-    PizzaCatalog pizza;
+    PizzaInterface pizza;
     @GET
     public Response getAllPizzas(){
         return Response.ok(pizza.pizzanAbfragen()).build();
