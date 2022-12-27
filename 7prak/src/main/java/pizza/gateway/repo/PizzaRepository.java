@@ -49,7 +49,7 @@ public class PizzaRepository implements PizzaCatalog {
 
     @Override
     public PizzaDTO pizzaAbfragen(Long pizzaId) {
-        return null;
+        return new PizzaDTO(Pizza.findById(pizzaId));
     }
 
     @Override
