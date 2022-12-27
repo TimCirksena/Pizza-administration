@@ -6,6 +6,7 @@ import pizza.boundary.acl.BestellungDTO;
 import pizza.boundary.acl.POSTBestellpostenDTO;
 import pizza.boundary.acl.PizzaDTO;
 import pizza.boundary.acl.ReturnBestellpostenDTO;
+import pizza.entity.Bestellposten;
 import pizza.entity.Pizza;
 import pizza.entity.PizzaCatalog;
 
@@ -17,9 +18,14 @@ import java.util.Collection;
 import java.util.List;
 @ApplicationScoped
 public class PizzaRepository implements PizzaCatalog {
+    @Transactional
     @Override
     public ReturnBestellpostenDTO addBestellposten(POSTBestellpostenDTO postBestellpostenDTO, long kundenId) {
-        return null;
+        Bestellposten bestellposten = new Bestellposten();
+        bestellposten.setPizza(new Pizza(postBestellpostenDTO.pizzaDTO));
+        bestellposten.setMenge(postBestellpostenDTO.menge);
+        bestellposten.persist();
+        return new ReturnBestellpostenDTO(bestellposten);
     }
 
     @Transactional
