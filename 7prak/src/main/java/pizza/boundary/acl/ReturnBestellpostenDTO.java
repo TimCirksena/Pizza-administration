@@ -1,7 +1,7 @@
 package pizza.boundary.acl;
 
 public class ReturnBestellpostenDTO {
-    long postenId;
-    int menge;
-    PizzaDTO pizzaDTO;
+    public long postenId;
+    public int menge;
+    public PizzaDTO pizzaDTO;
 }

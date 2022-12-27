@@ -1,10 +1,7 @@
 package pizza.entity;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -13,9 +10,11 @@ import io.quarkus.security.jpa.Roles;
 import io.quarkus.security.jpa.UserDefinition;
 import io.quarkus.security.jpa.Username;
 import io.smallrye.mutiny.Uni;
+import org.hibernate.annotations.NamedQueries;
 
 @Table(name = "kunde_table")
 @Entity
+//@NamedQuery(name = "Kunde.findAll", query = "select k from Kunde k order by k.id")
 @UserDefinition
 public class Kunde extends PanacheEntity {
 
