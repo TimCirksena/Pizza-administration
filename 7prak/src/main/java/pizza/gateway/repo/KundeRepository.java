@@ -3,6 +3,7 @@ package pizza.gateway.repo;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.runtime.StartupEvent;
 import pizza.boundary.acl.ReturnKundeDTO;
+import pizza.entity.Bestellung;
 import pizza.entity.Kunde;
 import pizza.entity.KundenCatalog;
 
@@ -39,8 +40,15 @@ public class KundeRepository implements KundenCatalog {
 
     @Override
     public Boolean deleteKunde(String username, String password) {
-        Kunde.find("username = ?1 and password = ?2", username, BcryptUtil.bcryptHash(password));
-        //Kunde.delete()
+        Kunde.delete("username = ?1 and password = ?2", username, BcryptUtil.bcryptHash(password));
+        return true;
+    }
+
+    @Override
+    public Bestellung getAktiveBestellungById(long id) {
+        Kunde k = Kunde.findById(id);
         return null;
     }
+
+
 }
