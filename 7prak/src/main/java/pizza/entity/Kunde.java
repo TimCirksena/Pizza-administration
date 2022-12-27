@@ -28,19 +28,7 @@ public class Kunde extends PanacheEntity {
     @Roles
     private String role;
 
-    /**
-     * Adds a new user to the database
-     * @param username the username
-     * @param password the unencrypted password (it will be encrypted with bcrypt)
-     * @param role the comma-separated roles
-     */
-    public static void add(String username, String password, String role) {
-        Kunde kunde = new Kunde();
-        kunde.username = username;
-        kunde.password = BcryptUtil.bcryptHash(password);
-        kunde.role = role;
-        kunde.persist();
-    }
+
 
     public String getUsername() {
         return username;
