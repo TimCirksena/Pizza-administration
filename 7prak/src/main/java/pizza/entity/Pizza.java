@@ -1,6 +1,7 @@
 package pizza.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import pizza.boundary.acl.PizzaDTO;
 
 import javax.persistence.*;
 
@@ -34,6 +35,14 @@ public class Pizza extends PanacheEntityBase {
         pizza.name = name;
         pizza.preis = preis;
         pizza.persist();
+    }
+
+    public Pizza(PizzaDTO pizza){
+        this.pizzaID = pizza.pizzaId;
+        this.groesse = pizza.groesse;
+        this.beschreibung = pizza.beschreibung;
+        this.name = pizza.name;
+        this.preis = pizza.preis;
     }
 
     public Pizza(float groesse, String beschreibung, String name, double preis) {

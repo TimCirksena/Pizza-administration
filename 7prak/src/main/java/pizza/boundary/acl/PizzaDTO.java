@@ -9,6 +9,7 @@ public class PizzaDTO {
     public String name;
     public double preis;
 
+    public PizzaDTO(){}
     public PizzaDTO(Pizza pizza){
         this.pizzaId = pizza.getPizzaID();
         this.groesse = pizza.getGroesse();

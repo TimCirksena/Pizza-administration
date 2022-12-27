@@ -1,7 +1,9 @@
 package pizza.boundary.rest;
 
+import pizza.boundary.acl.POSTBestellpostenDTO;
 import pizza.control.PizzaInterface;
 
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -22,8 +24,14 @@ public class PizzaResource {
 
     @GET
     @Path("/{pizzaID}")
-    public Response getPizza(@QueryParam("pizzaID") long pizzaID){
+    public Response getPizza(@PathParam("pizzaID") long pizzaID){
         return Response.ok(pizza.pizzaAbfragen(pizzaID)).build();
     }
 
+    @POST
+    @RolesAllowed("user")
+    @Path("/{kundenID}")
+    public Response postBestellungsposten( POSTBestellpostenDTO postBestellpostenDTO, @PathParam("kundenID") long kundenID){
+        return Response.ok(pizza.addBestellposten(postBestellpostenDTO, kundenID)).build();
+    }
 }
