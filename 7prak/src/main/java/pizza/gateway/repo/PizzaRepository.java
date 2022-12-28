@@ -90,10 +90,11 @@ public class PizzaRepository implements PizzaCatalog {
         return new PizzaDTO(Pizza.findById(pizzaId));
     }
 
+    @Transactional
     @Override
     public ReturnBestellpostenDTO bestellpostenAendern(long kundenId, long bestellpostenId, POSTBestellpostenDTO bestellpostenDTO) {
-
-        return null;
+        Bestellposten bestellposten = new Bestellposten(bestellpostenId, bestellpostenDTO.menge, Pizza.findById(bestellpostenDTO.pizzaID));
+        return new ReturnBestellpostenDTO(bestellposten);
     }
 
     @Override
