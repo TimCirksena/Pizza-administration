@@ -71,7 +71,7 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
                     return b;
                 }
             }
-        throw new NotFoundException();
+        throw new NoActiveBestellungException("");
     }
 
     @Override

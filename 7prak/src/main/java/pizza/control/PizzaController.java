@@ -4,6 +4,7 @@ import pizza.boundary.acl.BestellungDTO;
 import pizza.boundary.acl.POSTBestellpostenDTO;
 import pizza.boundary.acl.PizzaDTO;
 import pizza.boundary.acl.ReturnBestellpostenDTO;
+import pizza.boundary.exception.NoActiveBestellungException;
 import pizza.entity.PizzaCatalog;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -23,7 +24,7 @@ public class PizzaController implements PizzaInterface{
         return pizzaRepo.pizzanAbfragen();
     }
 
-    public BestellungDTO bestellungAbfragen(long kundenId) {
+    public BestellungDTO bestellungAbfragen(long kundenId) throws NoActiveBestellungException {
         return pizzaRepo.bestellungAbfragen(kundenId);
     }
 
@@ -37,7 +38,7 @@ public class PizzaController implements PizzaInterface{
     }
 
 
-    public BestellungDTO bestellungAbschicken(long kundenId) {
+    public BestellungDTO bestellungAbschicken(long kundenId) throws NoActiveBestellungException {
         return pizzaRepo.bestellungAbschicken(kundenId);
     }
 }

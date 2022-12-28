@@ -11,7 +11,7 @@ import java.util.List;
 public interface PizzaCatalog {
     ReturnBestellpostenDTO addBestellposten(POSTBestellpostenDTO postBestellpostenDTO, long kundenId);
     List<PizzaDTO> pizzanAbfragen();
-    BestellungDTO bestellungAbfragen(long kundenId);
+    BestellungDTO bestellungAbfragen(long kundenId) throws NoActiveBestellungException;
     PizzaDTO pizzaAbfragen(Long pizzaId);
     ReturnBestellpostenDTO bestellpostenAendern(long kundenId, long bestellpostenId, POSTBestellpostenDTO bestellpostenDTO);
     BestellungDTO bestellungAbschicken(long kundenId) throws NoActiveBestellungException;

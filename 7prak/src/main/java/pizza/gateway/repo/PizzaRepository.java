@@ -38,7 +38,7 @@ public class PizzaRepository implements PizzaCatalog {
             bestellpostens.add(new Bestellposten());
             bestellung.persist();
             return new ReturnBestellpostenDTO(bestellposten);
-        } catch (NotFoundException e) {
+        } catch (NoActiveBestellungException e) {
             Bestellung bestellung = kundenCatalogIntern.createAktiveBestellung(kundenId);
             bestellung.setBestellposten(new ArrayList<>());
             Collection<Bestellposten> bestellpostens = bestellung.getBestellposten();
@@ -83,7 +83,7 @@ public class PizzaRepository implements PizzaCatalog {
     }
 
     @Override
-    public BestellungDTO bestellungAbfragen(long kundenId) {
+    public BestellungDTO bestellungAbfragen(long kundenId) throws NoActiveBestellungException {
         BestellungDTO bestellungDTO = new BestellungDTO(kundenCatalogIntern.getAktiveBestellungById(kundenId));
         return bestellungDTO;
     }
