@@ -34,9 +34,6 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
         }
         return returnKundeDTOList;
     }
-
-
-
     /**
      * Adds a new user to the database
      * @param username the username
@@ -53,14 +50,12 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
         kunde.persist();
         return new ReturnKundeDTO(kunde);
     }
-
     @Override
     @Transactional
     public Boolean deleteKunde(String username, String password) {
         Kunde.delete("username = ?1 and password = ?2", username, BcryptUtil.bcryptHash(password));
         return true;
     }
-
     @Override
     @Transactional
     public Bestellung getAktiveBestellungById(long kundenId) throws NoActiveBestellungException {
@@ -73,14 +68,12 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
             }
         throw new NoActiveBestellungException("");
     }
-
     @Override
     public Bestellung createAktiveBestellung(long kundenId) {
         List<Bestellposten> bestellposten = new ArrayList<>();
         Bestellung bestellung = new Bestellung(false,bestellposten);
         return bestellung;
     }
-
     public Kunde findKundeById(long id){
         return Kunde.findById(id);
     }
