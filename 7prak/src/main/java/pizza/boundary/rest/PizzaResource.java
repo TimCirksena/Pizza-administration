@@ -34,4 +34,11 @@ public class PizzaResource {
     public Response postBestellungsposten( POSTBestellpostenDTO postBestellpostenDTO, @PathParam("kundenID") long kundenID){
         return Response.ok(pizza.addBestellposten(postBestellpostenDTO, kundenID)).build();
     }
+
+    @PATCH
+    @RolesAllowed("user")
+    @Path("/{kundenID}/{bestellpostenID}")
+    public Response patchBestellungsposten(@PathParam("kundenID") long kundenID, @PathParam("bestellpostenID") long bestellpostenID, POSTBestellpostenDTO postBestellpostenDTO){
+        return Response.ok(pizza.bestellpostenAendern(kundenID, bestellpostenID, postBestellpostenDTO)).build();
+    }
 }

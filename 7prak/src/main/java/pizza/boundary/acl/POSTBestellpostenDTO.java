@@ -4,5 +4,5 @@ import pizza.entity.Pizza;
 
 public class POSTBestellpostenDTO {
     public int menge;
-    public PizzaDTO pizzaDTO;
+    public long pizzaID;
 }

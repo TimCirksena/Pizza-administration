@@ -29,7 +29,7 @@ public class PizzaRepository implements PizzaCatalog {
             Bestellung bestellung = kundenCatalogIntern.getAktiveBestellungById(kundenId);
             Collection<Bestellposten> bestellpostens = bestellung.getBestellposten();
             Bestellposten bestellposten = new Bestellposten();
-            bestellposten.setPizza(new Pizza(postBestellpostenDTO.pizzaDTO));
+            bestellposten.setPizza(Pizza.findById(postBestellpostenDTO.pizzaID));
             bestellposten.setMenge(postBestellpostenDTO.menge);
             bestellposten.persist();
             bestellpostens.add(new Bestellposten());
@@ -40,7 +40,7 @@ public class PizzaRepository implements PizzaCatalog {
             bestellung.setBestellposten(new ArrayList<>());
             Collection<Bestellposten> bestellpostens = bestellung.getBestellposten();
             Bestellposten bestellposten = new Bestellposten();
-            bestellposten.setPizza(new Pizza(postBestellpostenDTO.pizzaDTO));
+            bestellposten.setPizza(Pizza.findById(postBestellpostenDTO.pizzaID));
             bestellposten.setMenge(postBestellpostenDTO.menge);
             bestellposten.persist();
             bestellpostens.add(new Bestellposten());
@@ -92,6 +92,7 @@ public class PizzaRepository implements PizzaCatalog {
 
     @Override
     public ReturnBestellpostenDTO bestellpostenAendern(long kundenId, long bestellpostenId, POSTBestellpostenDTO bestellpostenDTO) {
+
         return null;
     }
 
