@@ -38,13 +38,13 @@ public class PizzaResource {
     }
     @GET
     @RolesAllowed("kunde")
-    @Path("/bestellen")
+    @Path("/bestellung")
     public Response bestellungAbfragen(@Context SecurityContext securityContext) {
         return Response.ok(kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName())).build();
     }
     @POST
     @RolesAllowed("kunde")
-    @Path("/bestellen/abschicken")
+    @Path("/bestellung/abschicken")
     public Response bestellungAbschicken(@Context SecurityContext securityContext) {
         try{
 
@@ -56,14 +56,15 @@ public class PizzaResource {
 
     @POST
     @RolesAllowed("kunde")
+    @Path("/pizza/bestellung")
     public Response addBestellposten(@Context SecurityContext securityContext, POSTBestellpostenDTO postBestellpostenDTO){
         Long kundenID = kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName());
         return Response.ok(pizza.addBestellposten(postBestellpostenDTO, kundenID)).build();
     }
 
     @PATCH
-    @RolesAllowed("user")
-    @Path("/bestellen/{bestellpostenID}")
+    @RolesAllowed("kunde")
+    @Path("/bestellung/{bestellpostenID}")
     public Response patchBestellungsposten(@Context SecurityContext securityContext, @PathParam("bestellpostenID") long bestellpostenID, POSTBestellpostenDTO postBestellpostenDTO){
         Long kundenID = kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName());
         return Response.ok(pizza.bestellpostenAendern(kundenID, bestellpostenID, postBestellpostenDTO)).build();
