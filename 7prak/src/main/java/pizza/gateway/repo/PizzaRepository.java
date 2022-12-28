@@ -6,6 +6,7 @@ import pizza.boundary.acl.BestellungDTO;
 import pizza.boundary.acl.POSTBestellpostenDTO;
 import pizza.boundary.acl.PizzaDTO;
 import pizza.boundary.acl.ReturnBestellpostenDTO;
+import pizza.boundary.exception.NoActiveBestellungException;
 import pizza.entity.*;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -25,6 +26,8 @@ public class PizzaRepository implements PizzaCatalog {
     @Transactional
     @Override
     public ReturnBestellpostenDTO addBestellposten(POSTBestellpostenDTO postBestellpostenDTO, long kundenId) {
+        /** Maybe neue Bestellung hinzufügen wenn man eine alte Bestellung mit noch vielen Pizzen offen hat
+         * Damit der Kunde nicht ausversehen etwas bestellt was er nicht haben wollte */
         try {
             Bestellung bestellung = kundenCatalogIntern.getAktiveBestellungById(kundenId);
             Collection<Bestellposten> bestellpostens = bestellung.getBestellposten();
@@ -98,7 +101,10 @@ public class PizzaRepository implements PizzaCatalog {
     }
 
     @Override
-    public BestellungDTO bestellungAbschicken(long kundenId) {
-        return null;
+    public BestellungDTO bestellungAbschicken(long kundenId) throws NoActiveBestellungException {
+            BestellungDTO bestellungDTO = new BestellungDTO(kundenCatalogIntern.getAktiveBestellungById(kundenId));
+            bestellungDTO.bestellungFertig = true;
+            kundenCatalogIntern.getAktiveBestellungById(kundenId).setBestellungFertig(true);
+            return bestellungDTO;
     }
 }

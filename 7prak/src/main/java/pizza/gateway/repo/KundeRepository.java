@@ -3,6 +3,7 @@ package pizza.gateway.repo;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.runtime.StartupEvent;
 import pizza.boundary.acl.ReturnKundeDTO;
+import pizza.boundary.exception.NoActiveBestellungException;
 import pizza.entity.*;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -62,7 +63,7 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
 
     @Override
     @Transactional
-    public Bestellung getAktiveBestellungById(long kundenId) throws NotFoundException {
+    public Bestellung getAktiveBestellungById(long kundenId) throws NoActiveBestellungException {
         Kunde k = Kunde.findById(kundenId);
             for (int i = 0; i<k.getBestellungList().size(); i++){
                 if(!k.getBestellungList().get(i).isBestellungFertig()){
