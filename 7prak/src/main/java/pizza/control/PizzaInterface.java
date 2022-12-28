@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PizzaInterface {
     ReturnBestellpostenDTO addBestellposten(POSTBestellpostenDTO postBestellpostenDTO, long kundenId);
-    List<PizzaDTO> pizzanAbfragen();
+    List<PizzaDTO> pizzenAbfragen();
     BestellungDTO bestellungAbfragen(long kundenId);
     PizzaDTO pizzaAbfragen(Long pizzaId);
     ReturnBestellpostenDTO bestellpostenAendern(long kundenId, long bestellpostenId, POSTBestellpostenDTO bestellpostenDTO);

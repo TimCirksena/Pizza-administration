@@ -25,24 +25,21 @@ public class KundenResource {
         return Response.ok(controller.getAllKunden()).build();
     }
 
+    /**
+     * jeder Nutzer darf ein Kundenkonto erstellen.
+     * Andere Rollen sind nicht verfügbar
+     * */
     @POST
     public Response addKunde(POSTKundeDTO postKundeDTO){
-        return Response.ok(controller.addKunde(postKundeDTO.username, postKundeDTO.password, postKundeDTO.role)).build();
+        return Response.ok(controller.addKunde(postKundeDTO.username, postKundeDTO.password, "kunde")).build();
     }
 
     @GET
-    @RolesAllowed("user")
+    @RolesAllowed("kunde")
     @Path("/me")
     @Produces(MediaType.TEXT_PLAIN)
     public String me(@Context SecurityContext securityContext) {
+        //securityContext.getUserPrincipal().
         return securityContext.getUserPrincipal().getName();
-    }
-
-    @GET
-    @RolesAllowed({"user","admin"})
-    @Path("/boid")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String boid() {
-        return "hi";
     }
 }

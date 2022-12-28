@@ -25,4 +25,9 @@ public class KundenController implements KundenInterface{
     public List<ReturnKundeDTO> getAllKunden() {
         return kundenCatalog.getAllKunden();
     }
+
+    @Override
+    public Long getKundenIdByUsername(String username) {
+        return kundenCatalog.getKundenIdByUsername(username);
+    }
 }

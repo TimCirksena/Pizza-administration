@@ -19,7 +19,7 @@ public class PizzaController implements PizzaInterface{
         return pizzaRepo.addBestellposten(postBestellpostenDTO, kundenId);
     }
 
-    public List<PizzaDTO> pizzanAbfragen() {
+    public List<PizzaDTO> pizzenAbfragen() {
         return pizzaRepo.pizzanAbfragen();
     }
 

@@ -34,6 +34,8 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
         return returnKundeDTOList;
     }
 
+
+
     /**
      * Adds a new user to the database
      * @param username the username
@@ -82,5 +84,9 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
         return Kunde.findById(id);
     }
 
-
+    @Override
+    public Long getKundenIdByUsername(String username) {
+        Kunde k = Kunde.find("username", username).firstResult();
+        return k.id;
+    }
 }

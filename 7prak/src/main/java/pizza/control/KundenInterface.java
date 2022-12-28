@@ -10,4 +10,5 @@ public interface KundenInterface {
     ReturnKundeDTO addKunde(String username, String password, String role);
     Boolean deleteKunde(String username, String password);
     List<ReturnKundeDTO> getAllKunden();
+    Long getKundenIdByUsername(String username);
 }
