@@ -5,6 +5,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import javax.enterprise.inject.Model;
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Cacheable
@@ -21,12 +22,16 @@ public class Bestellung extends PanacheEntityBase {
     private boolean bestellungFertig;
     @Column
     @OneToMany
-    private Collection<Bestellposten> bestellposten;
+    private List<Bestellposten> bestellposten;
 
     public Bestellung(){}
 
-    public Bestellung(long bestellungID, boolean bestellungFertig, Collection<Bestellposten> bestellposten) {
+    public Bestellung(long bestellungID, boolean bestellungFertig, List<Bestellposten> bestellposten) {
         this.bestellungID = bestellungID;
+        this.bestellungFertig = bestellungFertig;
+        this.bestellposten = bestellposten;
+    }
+    public Bestellung(boolean bestellungFertig, List<Bestellposten> bestellposten){
         this.bestellungFertig = bestellungFertig;
         this.bestellposten = bestellposten;
     }
@@ -47,11 +52,11 @@ public class Bestellung extends PanacheEntityBase {
         this.bestellungFertig = bestellungFertig;
     }
 
-    public Collection<Bestellposten> getBestellposten() {
+    public List<Bestellposten> getBestellposten() {
         return bestellposten;
     }
 
-    public void setBestellposten(Collection<Bestellposten> bestellposten) {
+    public void setBestellposten(List<Bestellposten> bestellposten) {
         this.bestellposten = bestellposten;
     }
 }

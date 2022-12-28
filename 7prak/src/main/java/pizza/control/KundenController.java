@@ -7,6 +7,7 @@ import pizza.entity.KundenCatalog;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.List;
 
 @ApplicationScoped
 public class KundenController implements KundenInterface{
@@ -21,7 +22,7 @@ public class KundenController implements KundenInterface{
         return kundenCatalog.deleteKunde(username,password);
     }
 
-    public Collection<ReturnKundeDTO> getAllKunden() {
+    public List<ReturnKundeDTO> getAllKunden() {
         return kundenCatalog.getAllKunden();
     }
 }

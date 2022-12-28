@@ -3,10 +3,7 @@ package pizza.gateway.repo;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.runtime.StartupEvent;
 import pizza.boundary.acl.ReturnKundeDTO;
-import pizza.entity.Bestellung;
-import pizza.entity.Kunde;
-import pizza.entity.KundenCatalog;
-import pizza.entity.KundenCatalogIntern;
+import pizza.entity.*;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -28,7 +25,7 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
 
     @Override
     @Transactional
-    public Collection<ReturnKundeDTO> getAllKunden() {
+    public List<ReturnKundeDTO> getAllKunden() {
         Collection<Kunde> kunden = Kunde.findAll().list();
         List<ReturnKundeDTO> returnKundeDTOList = new ArrayList<>();
         for(Kunde k : kunden){
@@ -76,7 +73,9 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
 
     @Override
     public Bestellung createAktiveBestellung(long kundenId) {
-        return null;
+        List<Bestellposten> bestellposten = new ArrayList<>();
+        Bestellung bestellung = new Bestellung(false,bestellposten);
+        return bestellung;
     }
 
     public Kunde findKundeById(long id){
