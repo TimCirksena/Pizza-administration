@@ -21,11 +21,6 @@ public class KundenController implements KundenInterface{
         return kundenCatalog.deleteKunde(username,password);
     }
 
-    @Override
-    public Bestellung getAktiveBestellungById(long id) {
-        return kundenCatalog.getAktiveBestellungById(id);
-    }
-
     public Collection<ReturnKundeDTO> getAllKunden() {
         return kundenCatalog.getAllKunden();
     }

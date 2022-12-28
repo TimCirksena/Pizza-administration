@@ -2,6 +2,7 @@ package pizza.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
+import javax.enterprise.inject.Model;
 import javax.persistence.*;
 import java.util.Collection;
 

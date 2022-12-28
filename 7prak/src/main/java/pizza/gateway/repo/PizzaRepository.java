@@ -50,7 +50,7 @@ public class PizzaRepository implements PizzaCatalog {
 
     @Override
     public BestellungDTO bestellungAbfragen(long kundenId) {
-        return null;
+
     }
 
     @Override

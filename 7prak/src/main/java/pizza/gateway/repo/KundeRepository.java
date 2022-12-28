@@ -6,6 +6,7 @@ import pizza.boundary.acl.ReturnKundeDTO;
 import pizza.entity.Bestellung;
 import pizza.entity.Kunde;
 import pizza.entity.KundenCatalog;
+import pizza.entity.KundenCatalogIntern;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -15,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 
 @ApplicationScoped
-public class KundeRepository implements KundenCatalog {
+public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
     @Transactional
     public void loadUsers(@Observes StartupEvent evt) {
         // reset and load all test users
@@ -61,9 +62,18 @@ public class KundeRepository implements KundenCatalog {
 
     @Override
     @Transactional
-    public Bestellung getAktiveBestellungById(long id) {
-        Kunde k = Kunde.findById(id);
+    public Bestellung getAktiveBestellungById(long kundenId) {
+        Kunde k = Kunde.findById(kundenId);
         return null;
+    }
+
+    @Override
+    public Bestellung createAktiveBestellung(long kundenId) {
+        return null;
+    }
+
+    public Kunde findKundeById(long id){
+        return Kunde.findById(id);
     }
 
 

@@ -12,6 +12,9 @@ import io.quarkus.security.jpa.Username;
 import io.smallrye.mutiny.Uni;
 import org.hibernate.annotations.NamedQueries;
 
+import java.util.Collection;
+import java.util.List;
+
 @Table(name = "kunde_table")
 @Entity
 //@NamedQuery(name = "Kunde.findAll", query = "select k from Kunde k order by k.id")
@@ -27,7 +30,8 @@ public class Kunde extends PanacheEntity {
     @Roles
     private String role;
 
-
+    @OneToMany
+    private Collection<Bestellung> bestellungCollection;
 
     public String getUsername() {
         return username;
@@ -52,4 +56,7 @@ public class Kunde extends PanacheEntity {
     public void setRole(String role) {
         this.role = role;
     }
+
+
+
 }
