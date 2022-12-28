@@ -33,13 +33,4 @@ public class KundenResource {
     public Response addKunde(POSTKundeDTO postKundeDTO){
         return Response.ok(controller.addKunde(postKundeDTO.username, postKundeDTO.password, "kunde")).build();
     }
-
-    @GET
-    @RolesAllowed("kunde")
-    @Path("/me")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String me(@Context SecurityContext securityContext) {
-        //securityContext.getUserPrincipal().
-        return securityContext.getUserPrincipal().getName();
-    }
 }
