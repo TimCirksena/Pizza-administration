@@ -52,8 +52,8 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
     }
     @Override
     @Transactional
-    public Boolean deleteKunde(String username, String password) {
-        Kunde.delete("username = ?1 and password = ?2", username, BcryptUtil.bcryptHash(password));
+    public Boolean deleteKunde(String username) {
+        Kunde.delete("username", username);
         return true;
     }
     @Override

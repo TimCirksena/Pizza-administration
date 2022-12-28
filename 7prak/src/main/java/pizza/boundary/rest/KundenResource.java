@@ -33,4 +33,9 @@ public class KundenResource {
     public Response addKunde(POSTKundeDTO postKundeDTO){
         return Response.ok(controller.addKunde(postKundeDTO.username, postKundeDTO.password, "kunde")).build();
     }
+
+    @DELETE
+    public Response deleteKunde(@Context SecurityContext securityContext){
+        return Response.ok(controller.deleteKunde(securityContext.getUserPrincipal().getName())).build();
+    }
 }

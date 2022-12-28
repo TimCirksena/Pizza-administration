@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface KundenInterface {
     ReturnKundeDTO addKunde(String username, String password, String role);
-    Boolean deleteKunde(String username, String password);
+    Boolean deleteKunde(String username);
     List<ReturnKundeDTO> getAllKunden();
     Long getKundenIdByUsername(String username);
 }

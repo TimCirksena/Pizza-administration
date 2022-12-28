@@ -18,8 +18,8 @@ public class KundenController implements KundenInterface{
         return kundenCatalog.addKunde(username,password,role);
     }
 
-    public Boolean deleteKunde(String username, String password) {
-        return kundenCatalog.deleteKunde(username,password);
+    public Boolean deleteKunde(String username) {
+        return kundenCatalog.deleteKunde(username);
     }
 
     public List<ReturnKundeDTO> getAllKunden() {
