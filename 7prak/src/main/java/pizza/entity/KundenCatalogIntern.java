@@ -1,5 +1,7 @@
 package pizza.entity;
 
+
+
 import javax.ws.rs.NotFoundException;
 
 public interface KundenCatalogIntern {

@@ -30,8 +30,9 @@ public class Kunde extends PanacheEntity {
     @Roles
     private String role;
 
+
     @OneToMany
-    private Collection<Bestellung> bestellungCollection;
+    private List<Bestellung> bestellungList;
 
     public String getUsername() {
         return username;
@@ -55,6 +56,14 @@ public class Kunde extends PanacheEntity {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public List<Bestellung> getBestellungList() {
+        return bestellungList;
+    }
+
+    public void setBestellungCollection(List<Bestellung> bestellungList) {
+        this.bestellungList = bestellungList;
     }
 
 

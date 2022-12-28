@@ -11,6 +11,7 @@ import pizza.entity.KundenCatalogIntern;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.transaction.Transactional;
+import javax.ws.rs.NotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -62,9 +63,15 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
 
     @Override
     @Transactional
-    public Bestellung getAktiveBestellungById(long kundenId) {
+    public Bestellung getAktiveBestellungById(long kundenId) throws NotFoundException {
         Kunde k = Kunde.findById(kundenId);
-        return null;
+            for (int i = 0; i<k.getBestellungList().size(); i++){
+                if(!k.getBestellungList().get(i).isBestellungFertig()){
+                    Bestellung b = k.getBestellungList().get(i);
+                    return b;
+                }
+            }
+        throw new NotFoundException();
     }
 
     @Override
