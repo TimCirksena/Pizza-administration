@@ -7,14 +7,12 @@ import pizza.control.KundenInterface;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.JsonObject;
+import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.io.StringReader;
 
 @Path("/kunden")
 @Produces(MediaType.APPLICATION_JSON)
@@ -34,12 +32,14 @@ public class KundenResource {
      * Andere Rollen sind nicht verfügbar
      * */
     @POST
+    @Transactional
     public Response addKunde(POSTKundeDTO postKundeDTO){
         return Response.ok(controller.addKunde(postKundeDTO.username, postKundeDTO.password, "kunde")).build();
     }
 
     @DELETE
     @RolesAllowed("kunde")
+    @Transactional
     public Response deleteKunde(@Context SecurityContext securityContext){
         if(controller.deleteKunde(securityContext.getUserPrincipal().getName())){
             return Response.ok(new StringDTO("Kunde erfolgreich gelöscht")).build();

@@ -15,4 +15,5 @@ public interface PizzaInterface {
     PizzaDTO pizzaAbfragen(Long pizzaId);
     ReturnBestellpostenDTO bestellpostenAendern(long kundenId, long bestellpostenId, POSTBestellpostenDTO bestellpostenDTO);
     BestellungDTO bestellungAbschicken(long kundenId) throws NoActiveBestellungException;
+    List<BestellungDTO> getAllBestellungen();
 }

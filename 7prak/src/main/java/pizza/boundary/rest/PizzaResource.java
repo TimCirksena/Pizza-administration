@@ -5,12 +5,15 @@ import pizza.boundary.acl.BestellungDTO;
 import pizza.boundary.acl.POSTBestellpostenDTO;
 import pizza.boundary.acl.PizzaDTO;
 import pizza.boundary.acl.ReturnBestellpostenDTO;
+import pizza.boundary.exception.NoActiveBestellungException;
 import pizza.control.KundenInterface;
 import pizza.control.PizzaInterface;
+import pizza.gateway.repo.PizzaRepository;
 
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -26,6 +29,9 @@ public class PizzaResource {
     PizzaInterface pizza;
     @Inject
     KundenInterface kundenInterface;
+
+    @Inject
+    PizzaRepository pizzaRepo;
     @GET
     public Response pizzenAbfragen(){
         return Response.ok(pizza.pizzenAbfragen()).build();
@@ -36,13 +42,20 @@ public class PizzaResource {
     public Response pizzaAbfragen(@PathParam("pizzaID") long pizzaID){
         return Response.ok(pizza.pizzaAbfragen(pizzaID)).build();
     }
+
     @GET
     @RolesAllowed("kunde")
     @Path("/bestellung")
     public Response bestellungAbfragen(@Context SecurityContext securityContext) {
-        return Response.ok(kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName())).build();
+        try {
+            return Response.ok(pizza.bestellungAbfragen(kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName()))).build();
+        } catch (NoActiveBestellungException e){
+            return Response.noContent().build();
+        }
+
     }
     @POST
+    @Transactional
     @RolesAllowed("kunde")
     @Path("/bestellung/abschicken")
     public Response bestellungAbschicken(@Context SecurityContext securityContext) {
@@ -55,18 +68,32 @@ public class PizzaResource {
     }
 
     @POST
+    @Transactional
     @RolesAllowed("kunde")
-    @Path("/pizza/bestellung")
+    @Path("/bestellung")
     public Response addBestellposten(@Context SecurityContext securityContext, POSTBestellpostenDTO postBestellpostenDTO){
         Long kundenID = kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName());
         return Response.ok(pizza.addBestellposten(postBestellpostenDTO, kundenID)).build();
     }
 
     @PATCH
+    @Transactional
     @RolesAllowed("kunde")
     @Path("/bestellung/{bestellpostenID}")
     public Response patchBestellungsposten(@Context SecurityContext securityContext, @PathParam("bestellpostenID") long bestellpostenID, POSTBestellpostenDTO postBestellpostenDTO){
         Long kundenID = kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName());
         return Response.ok(pizza.bestellpostenAendern(kundenID, bestellpostenID, postBestellpostenDTO)).build();
+    }
+
+    @GET
+    @Path("/bestellungen")
+    public Response getAllBestellungen(){
+        return Response.ok(pizza.getAllBestellungen()).build();
+    }
+
+    @GET
+    @Path("/debug")
+    public Response get(){
+        return Response.ok(pizzaRepo.get()).build();
     }
 }

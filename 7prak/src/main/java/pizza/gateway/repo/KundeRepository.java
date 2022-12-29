@@ -2,6 +2,7 @@ package pizza.gateway.repo;
 
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.runtime.StartupEvent;
+import pizza.boundary.acl.BestellungDTO;
 import pizza.boundary.acl.ReturnKundeDTO;
 import pizza.boundary.exception.NoActiveBestellungException;
 import pizza.entity.*;
@@ -21,11 +22,10 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
         // reset and load all test users
         Kunde.deleteAll();
         addKunde("admin", "admin", "admin");
-        addKunde("user", "user", "user");
+        addKunde("user", "user", "kunde");
     }
 
     @Override
-    @Transactional
     public List<ReturnKundeDTO> getAllKunden() {
         Collection<Kunde> kunden = Kunde.findAll().list();
         List<ReturnKundeDTO> returnKundeDTOList = new ArrayList<>();
@@ -41,7 +41,6 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
      * @param role the comma-separated roles
      */
     @Override
-    @Transactional
     public ReturnKundeDTO addKunde(String username, String password, String role) {
         Kunde kunde = new Kunde();
         kunde.setUsername(username);
@@ -54,13 +53,11 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
      * returns true if at least 1 kunde has been deleted
      * */
     @Override
-    @Transactional
     public Boolean deleteKunde(String username) {
         long amountDeleted = Kunde.delete("username", username);
         return amountDeleted > 0;
     }
     @Override
-    @Transactional
     public Bestellung getAktiveBestellungById(long kundenId) throws NoActiveBestellungException {
         Kunde k = Kunde.findById(kundenId);
             for (int i = 0; i<k.getBestellungList().size(); i++){
@@ -85,5 +82,15 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
     public Long getKundenIdByUsername(String username) {
         Kunde k = Kunde.find("username", username).firstResult();
         return k.id;
+    }
+
+    @Override
+    public List<BestellungDTO> getAllBestellung(){
+        List<Bestellung> bestellungs = Bestellung.listAll();
+        List<BestellungDTO> bestellungDTOS = new ArrayList<>();
+        for (Bestellung b: bestellungs) {
+            bestellungDTOS.add(new BestellungDTO(b));
+        }
+        return bestellungDTOS;
     }
 }

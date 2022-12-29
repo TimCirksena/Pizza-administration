@@ -1,5 +1,6 @@
 package pizza.entity;
 
+import pizza.boundary.acl.BestellungDTO;
 import pizza.boundary.acl.ReturnKundeDTO;
 
 import java.util.Collection;

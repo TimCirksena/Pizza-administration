@@ -21,7 +21,7 @@ public class Bestellung extends PanacheEntityBase {
     @Column
     private boolean bestellungFertig;
     @Column
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<Bestellposten> bestellposten;
 
     public Bestellung(){}

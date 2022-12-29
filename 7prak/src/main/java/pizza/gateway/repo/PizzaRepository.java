@@ -1,5 +1,7 @@
 package pizza.gateway.repo;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.panache.common.Sort;
 import io.quarkus.runtime.StartupEvent;
 import pizza.boundary.acl.BestellungDTO;
@@ -13,7 +15,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import javax.ws.rs.NotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,31 +24,29 @@ public class PizzaRepository implements PizzaCatalog {
     @Inject
     KundenCatalogIntern kundenCatalogIntern;
 
-    @Transactional
     @Override
     public ReturnBestellpostenDTO addBestellposten(POSTBestellpostenDTO postBestellpostenDTO, long kundenId) {
         /** Maybe neue Bestellung hinzufügen wenn man eine alte Bestellung mit noch vielen Pizzen offen hat
          * Damit der Kunde nicht ausversehen etwas bestellt was er nicht haben wollte */
         try {
             Bestellung bestellung = kundenCatalogIntern.getAktiveBestellungById(kundenId);
-            Collection<Bestellposten> bestellpostens = bestellung.getBestellposten();
+            List<Bestellposten> bestellpostens = bestellung.getBestellposten();
             Bestellposten bestellposten = new Bestellposten();
             bestellposten.setPizza(Pizza.findById(postBestellpostenDTO.pizzaID));
             bestellposten.setMenge(postBestellpostenDTO.menge);
-            bestellposten.persist();
+            bestellposten.persistAndFlush();
             bestellpostens.add(new Bestellposten());
-            bestellung.persist();
+            bestellung.persistAndFlush();
             return new ReturnBestellpostenDTO(bestellposten);
         } catch (NoActiveBestellungException e) {
             Bestellung bestellung = kundenCatalogIntern.createAktiveBestellung(kundenId);
-            bestellung.setBestellposten(new ArrayList<>());
-            Collection<Bestellposten> bestellpostens = bestellung.getBestellposten();
+            List<Bestellposten> bestellpostens = bestellung.getBestellposten();
             Bestellposten bestellposten = new Bestellposten();
             bestellposten.setPizza(Pizza.findById(postBestellpostenDTO.pizzaID));
             bestellposten.setMenge(postBestellpostenDTO.menge);
-            bestellposten.persist();
+            bestellposten.persistAndFlush();
             bestellpostens.add(new Bestellposten());
-            bestellung.persist();
+            bestellung.persistAndFlush();
             return new ReturnBestellpostenDTO(bestellposten);
         }
     }
@@ -62,8 +61,7 @@ public class PizzaRepository implements PizzaCatalog {
 
     }
 
-    @Transactional
-    public static void addKunde(float groesse, String beschreibung, String name, double preis){
+    public static void addKunde(float groesse, String beschreibung, String name, double preis) {
         Pizza pizza = new Pizza();
         pizza.setGroesse(groesse);
         pizza.setBeschreibung(beschreibung);
@@ -93,7 +91,6 @@ public class PizzaRepository implements PizzaCatalog {
         return new PizzaDTO(Pizza.findById(pizzaId));
     }
 
-    @Transactional
     @Override
     public ReturnBestellpostenDTO bestellpostenAendern(long kundenId, long bestellpostenId, POSTBestellpostenDTO bestellpostenDTO) {
         Bestellposten bestellposten = new Bestellposten(bestellpostenId, bestellpostenDTO.menge, Pizza.findById(bestellpostenDTO.pizzaID));
@@ -102,9 +99,23 @@ public class PizzaRepository implements PizzaCatalog {
 
     @Override
     public BestellungDTO bestellungAbschicken(long kundenId) throws NoActiveBestellungException {
-            BestellungDTO bestellungDTO = new BestellungDTO(kundenCatalogIntern.getAktiveBestellungById(kundenId));
-            bestellungDTO.bestellungFertig = true;
-            kundenCatalogIntern.getAktiveBestellungById(kundenId).setBestellungFertig(true);
-            return bestellungDTO;
+        BestellungDTO bestellungDTO = new BestellungDTO(kundenCatalogIntern.getAktiveBestellungById(kundenId));
+        bestellungDTO.bestellungFertig = true;
+        kundenCatalogIntern.getAktiveBestellungById(kundenId).setBestellungFertig(true);
+        return bestellungDTO;
+    }
+
+    @Override
+    public List<BestellungDTO> getAllBestellungen(){
+        return kundenCatalogIntern.getAllBestellung();
+    }
+
+    public List<PanacheEntityBase> get(){
+        List<PanacheEntityBase> all = new ArrayList<>();
+        all.addAll(Pizza.listAll());
+        all.addAll(Bestellung.listAll());
+        all.addAll(Bestellposten.listAll());
+        all.addAll(Kunde.listAll());
+        return all;
     }
 }

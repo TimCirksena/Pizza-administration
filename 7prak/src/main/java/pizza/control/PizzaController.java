@@ -41,4 +41,8 @@ public class PizzaController implements PizzaInterface{
     public BestellungDTO bestellungAbschicken(long kundenId) throws NoActiveBestellungException {
         return pizzaRepo.bestellungAbschicken(kundenId);
     }
+
+    public List<BestellungDTO> getAllBestellungen(){
+        return pizzaRepo.getAllBestellungen();
+    }
 }

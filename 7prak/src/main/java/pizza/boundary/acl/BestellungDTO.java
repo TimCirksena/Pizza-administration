@@ -14,8 +14,7 @@ public class BestellungDTO {
     public BestellungDTO(Bestellung bestellung) {
         this.bestellungId = bestellung.getBestellungID();
         this.bestellungFertig = bestellung.isBestellungFertig();
-        for (Bestellposten b : bestellung.getBestellposten()
-        ) {
+        for (Bestellposten b : bestellung.getBestellposten()) {
             ReturnBestellpostenDTO bestellpostenDTO = new ReturnBestellpostenDTO(b);
             bestellpostenDTOList.add(bestellpostenDTO);
         }
