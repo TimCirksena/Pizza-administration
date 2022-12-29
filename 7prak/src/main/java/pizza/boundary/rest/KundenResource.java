@@ -1,16 +1,20 @@
 package pizza.boundary.rest;
 
 import pizza.boundary.acl.POSTKundeDTO;
+import pizza.boundary.acl.StringDTO;
 import pizza.control.KundenController;
 import pizza.control.KundenInterface;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import java.io.StringReader;
 
 @Path("/kunden")
 @Produces(MediaType.APPLICATION_JSON)
@@ -19,7 +23,7 @@ public class KundenResource {
     @Inject
     KundenInterface controller;
     @GET
-    @RolesAllowed("admin")
+    @RolesAllowed({"admin"})
     @Path("/allKunden")
     public Response getAllKunden(){
         return Response.ok(controller.getAllKunden()).build();
@@ -35,7 +39,12 @@ public class KundenResource {
     }
 
     @DELETE
+    @RolesAllowed("kunde")
     public Response deleteKunde(@Context SecurityContext securityContext){
-        return Response.ok(controller.deleteKunde(securityContext.getUserPrincipal().getName())).build();
+        if(controller.deleteKunde(securityContext.getUserPrincipal().getName())){
+            return Response.ok(new StringDTO("Kunde erfolgreich gelöscht")).build();
+        } else {
+            return Response.status(404, "Kunde nicht vorhanden").build();
+        }
     }
 }

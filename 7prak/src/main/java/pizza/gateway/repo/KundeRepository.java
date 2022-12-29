@@ -50,11 +50,14 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
         kunde.persist();
         return new ReturnKundeDTO(kunde);
     }
+    /**
+     * returns true if at least 1 kunde has been deleted
+     * */
     @Override
     @Transactional
     public Boolean deleteKunde(String username) {
-        Kunde.delete("username", username);
-        return true;
+        long amountDeleted = Kunde.delete("username", username);
+        return amountDeleted > 0;
     }
     @Override
     @Transactional
