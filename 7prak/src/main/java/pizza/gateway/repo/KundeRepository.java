@@ -72,6 +72,8 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
     public Bestellung createAktiveBestellung(long kundenId) {
         List<Bestellposten> bestellposten = new ArrayList<>();
         Bestellung bestellung = new Bestellung(false,bestellposten);
+        findKundeById(kundenId).getBestellungList().add(bestellung);
+        bestellung.persist();
         return bestellung;
     }
     public Kunde findKundeById(long id){

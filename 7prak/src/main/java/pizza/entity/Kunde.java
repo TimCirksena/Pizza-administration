@@ -30,7 +30,6 @@ public class Kunde extends PanacheEntity {
     @Roles
     private String role;
 
-
     @OneToMany
     private List<Bestellung> bestellungList;
 

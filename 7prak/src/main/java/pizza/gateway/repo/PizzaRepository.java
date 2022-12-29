@@ -34,9 +34,9 @@ public class PizzaRepository implements PizzaCatalog {
             Bestellposten bestellposten = new Bestellposten();
             bestellposten.setPizza(Pizza.findById(postBestellpostenDTO.pizzaID));
             bestellposten.setMenge(postBestellpostenDTO.menge);
-            bestellposten.persistAndFlush();
-            bestellpostens.add(new Bestellposten());
-            bestellung.persistAndFlush();
+            //bestellposten.persistAndFlush();
+            bestellpostens.add(bestellposten);
+            //bestellung.persistAndFlush();
             return new ReturnBestellpostenDTO(bestellposten);
         } catch (NoActiveBestellungException e) {
             Bestellung bestellung = kundenCatalogIntern.createAktiveBestellung(kundenId);
@@ -44,9 +44,9 @@ public class PizzaRepository implements PizzaCatalog {
             Bestellposten bestellposten = new Bestellposten();
             bestellposten.setPizza(Pizza.findById(postBestellpostenDTO.pizzaID));
             bestellposten.setMenge(postBestellpostenDTO.menge);
-            bestellposten.persistAndFlush();
-            bestellpostens.add(new Bestellposten());
-            bestellung.persistAndFlush();
+            //bestellposten.persistAndFlush();
+            bestellpostens.add(bestellposten);
+            //bestellung.persistAndFlush();
             return new ReturnBestellpostenDTO(bestellposten);
         }
     }
@@ -118,4 +118,5 @@ public class PizzaRepository implements PizzaCatalog {
         all.addAll(Kunde.listAll());
         return all;
     }
+
 }
