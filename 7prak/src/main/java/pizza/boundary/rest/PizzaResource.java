@@ -1,10 +1,6 @@
 package pizza.boundary.rest;
 
-import io.quarkus.security.jpa.Roles;
-import pizza.boundary.acl.BestellungDTO;
 import pizza.boundary.acl.POSTBestellpostenDTO;
-import pizza.boundary.acl.PizzaDTO;
-import pizza.boundary.acl.ReturnBestellpostenDTO;
 import pizza.boundary.exception.NoActiveBestellungException;
 import pizza.control.KundenInterface;
 import pizza.control.PizzaInterface;
@@ -48,7 +44,7 @@ public class PizzaResource {
     @Path("/bestellung")
     public Response bestellungAbfragen(@Context SecurityContext securityContext) {
         try {
-            return Response.ok(pizza.bestellungAbfragen(kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName()))).build();
+            return Response.ok(pizza.bestellungAbschicken(kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName()))).build();
         } catch (NoActiveBestellungException e){
             return Response.noContent().build();
         }
@@ -60,11 +56,10 @@ public class PizzaResource {
     @Path("/bestellung/abschicken")
     public Response bestellungAbschicken(@Context SecurityContext securityContext) {
         try{
-
-        }catch (Exception e){//hier tims exception abfangen
-
+            return Response.ok(pizza.bestellungAbfragen(kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName()))).build();
+        }catch (NoActiveBestellungException e){//hier tims exception abfangen
+            return Response.noContent().build();
         }
-        return null;
     }
 
     @POST
