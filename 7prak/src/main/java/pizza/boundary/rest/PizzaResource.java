@@ -32,17 +32,6 @@ public class PizzaResource {
     @Inject
     PizzaRepository pizzaRepo;
 
-    @CheckedTemplate
-    public static class Templates {
-        public static native TemplateInstance hello(String name);
-    }
-
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public TemplateInstance get(@QueryParam("name") String name) {
-        return Templates.hello(name);
-    }
-
     @GET
     public Response pizzenAbfragen(){
         return Response.ok(pizza.pizzenAbfragen()).build();
@@ -59,7 +48,7 @@ public class PizzaResource {
     @Path("/bestellung")
     public Response bestellungAbfragen(@Context SecurityContext securityContext) {
         try {
-            return Response.ok(pizza.bestellungAbschicken(kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName()))).build();
+            return Response.ok(pizza.bestellungAbfragen(kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName()))).build();
         } catch (NoActiveBestellungException e){
             return Response.noContent().build();
         }
@@ -71,7 +60,7 @@ public class PizzaResource {
     @Path("/bestellung/abschicken")
     public Response bestellungAbschicken(@Context SecurityContext securityContext) {
         try{
-            return Response.ok(pizza.bestellungAbfragen(kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName()))).build();
+            return Response.ok(pizza.bestellungAbschicken(kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName()))).build();
         }catch (NoActiveBestellungException e){//hier tims exception abfangen
             return Response.noContent().build();
         }
