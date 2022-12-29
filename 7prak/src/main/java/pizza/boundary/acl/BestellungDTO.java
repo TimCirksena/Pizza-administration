@@ -4,12 +4,13 @@ import com.sun.xml.bind.v2.schemagen.xmlschema.List;
 import pizza.entity.Bestellposten;
 import pizza.entity.Bestellung;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class BestellungDTO {
     public long bestellungId;
     public boolean bestellungFertig;
-    public Collection<ReturnBestellpostenDTO> bestellpostenDTOList;
+    public Collection<ReturnBestellpostenDTO> bestellpostenDTOList = new ArrayList<>();
 
     public BestellungDTO(Bestellung bestellung) {
         this.bestellungId = bestellung.getBestellungID();
