@@ -58,15 +58,15 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
         return amountDeleted > 0;
     }
     @Override
-    public Bestellung getAktiveBestellungById(long kundenId) throws NoActiveBestellungException {
+    public Bestellung getAktiveBestellungById(long kundenId) {
         Kunde k = Kunde.findById(kundenId);
             for (int i = 0; i<k.getBestellungList().size(); i++){
                 if(!k.getBestellungList().get(i).isBestellungFertig()){
-                    Bestellung b = k.getBestellungList().get(i);
-                    return b;
+                    return k.getBestellungList().get(i);
+
                 }
             }
-        throw new NoActiveBestellungException("");
+        return createAktiveBestellung(kundenId);
     }
     @Override
     public Bestellung createAktiveBestellung(long kundenId) {

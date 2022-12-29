@@ -9,7 +9,7 @@ import javax.ws.rs.NotFoundException;
 import java.util.List;
 
 public interface KundenCatalogIntern {
-    Bestellung getAktiveBestellungById(long kundenId) throws NoActiveBestellungException;
+    Bestellung getAktiveBestellungById(long kundenId);
     Bestellung createAktiveBestellung(long kundenId);
     List<BestellungDTO> getAllBestellung();
 }

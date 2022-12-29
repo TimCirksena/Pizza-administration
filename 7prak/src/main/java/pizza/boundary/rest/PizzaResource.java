@@ -16,6 +16,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import io.quarkus.qute.TemplateInstance;
+import io.quarkus.qute.CheckedTemplate;
+
 @ApplicationScoped
 @Path("/pizza")
 @Produces(MediaType.APPLICATION_JSON)
@@ -28,6 +31,18 @@ public class PizzaResource {
 
     @Inject
     PizzaRepository pizzaRepo;
+
+    @CheckedTemplate
+    public static class Templates {
+        public static native TemplateInstance hello(String name);
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public TemplateInstance get(@QueryParam("name") String name) {
+        return Templates.hello(name);
+    }
+
     @GET
     public Response pizzenAbfragen(){
         return Response.ok(pizza.pizzenAbfragen()).build();

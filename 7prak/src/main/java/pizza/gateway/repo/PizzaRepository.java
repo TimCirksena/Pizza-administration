@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+
+
 @ApplicationScoped
 public class PizzaRepository implements PizzaCatalog {
     @Inject
@@ -28,28 +30,18 @@ public class PizzaRepository implements PizzaCatalog {
     public ReturnBestellpostenDTO addBestellposten(POSTBestellpostenDTO postBestellpostenDTO, long kundenId) {
         /** Maybe neue Bestellung hinzufügen wenn man eine alte Bestellung mit noch vielen Pizzen offen hat
          * Damit der Kunde nicht ausversehen etwas bestellt was er nicht haben wollte */
-        try {
-            Bestellung bestellung = kundenCatalogIntern.getAktiveBestellungById(kundenId);
-            List<Bestellposten> bestellpostens = bestellung.getBestellposten();
-            Bestellposten bestellposten = new Bestellposten();
-            bestellposten.setPizza(Pizza.findById(postBestellpostenDTO.pizzaID));
-            bestellposten.setMenge(postBestellpostenDTO.menge);
-            //bestellposten.persistAndFlush();
-            bestellpostens.add(bestellposten);
-            //bestellung.persistAndFlush();
-            return new ReturnBestellpostenDTO(bestellposten);
-        } catch (NoActiveBestellungException e) {
-            Bestellung bestellung = kundenCatalogIntern.createAktiveBestellung(kundenId);
-            List<Bestellposten> bestellpostens = bestellung.getBestellposten();
-            Bestellposten bestellposten = new Bestellposten();
-            bestellposten.setPizza(Pizza.findById(postBestellpostenDTO.pizzaID));
-            bestellposten.setMenge(postBestellpostenDTO.menge);
-            //bestellposten.persistAndFlush();
-            bestellpostens.add(bestellposten);
-            //bestellung.persistAndFlush();
-            return new ReturnBestellpostenDTO(bestellposten);
-        }
+
+        Bestellung bestellung = kundenCatalogIntern.getAktiveBestellungById(kundenId);
+        List<Bestellposten> bestellpostens = bestellung.getBestellposten();
+        Bestellposten bestellposten = new Bestellposten();
+        bestellposten.setPizza(Pizza.findById(postBestellpostenDTO.pizzaID));
+        bestellposten.setMenge(postBestellpostenDTO.menge);
+        //bestellposten.persistAndFlush();
+        bestellpostens.add(bestellposten);
+        //bestellung.persistAndFlush();
+        return new ReturnBestellpostenDTO(bestellposten);
     }
+
 
     @Transactional
     public void loadPizzas(@Observes StartupEvent evt) {
