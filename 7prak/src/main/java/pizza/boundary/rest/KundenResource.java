@@ -1,9 +1,13 @@
 package pizza.boundary.rest;
 
+import io.quarkus.qute.Template;
+import io.quarkus.qute.TemplateInstance;
 import pizza.boundary.acl.POSTKundeDTO;
+import pizza.boundary.acl.PizzaDTO;
 import pizza.boundary.acl.StringDTO;
 import pizza.control.KundenController;
 import pizza.control.KundenInterface;
+import pizza.entity.Pizza;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -20,6 +24,21 @@ import javax.ws.rs.core.SecurityContext;
 public class KundenResource {
     @Inject
     KundenInterface controller;
+    @Inject
+    Template test;
+
+    @GET
+    @Path("/qute")
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance get() {
+        PizzaDTO pizzaDTO = new PizzaDTO();
+        pizzaDTO.name = "magerita mit sahne";
+        pizzaDTO.preis = 2.22;
+        pizzaDTO.beschreibung = "extra sauce";
+        pizzaDTO.groesse = 88.8f;
+        return test.data(pizzaDTO);
+    }
+
     @GET
     @Transactional
     @RolesAllowed({"admin"})
