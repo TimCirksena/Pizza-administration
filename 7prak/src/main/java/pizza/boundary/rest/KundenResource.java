@@ -21,6 +21,7 @@ public class KundenResource {
     @Inject
     KundenInterface controller;
     @GET
+    @Transactional
     @RolesAllowed({"admin"})
     @Path("/allKunden")
     public Response getAllKunden(){

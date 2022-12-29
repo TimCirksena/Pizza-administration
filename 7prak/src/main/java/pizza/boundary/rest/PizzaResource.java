@@ -33,17 +33,20 @@ public class PizzaResource {
     PizzaRepository pizzaRepo;
 
     @GET
+    @Transactional
     public Response pizzenAbfragen(){
         return Response.ok(pizza.pizzenAbfragen()).build();
     }
 
     @GET
+    @Transactional
     @Path("/{pizzaID}")
     public Response pizzaAbfragen(@PathParam("pizzaID") long pizzaID){
         return Response.ok(pizza.pizzaAbfragen(pizzaID)).build();
     }
 
     @GET
+    @Transactional
     @RolesAllowed("kunde")
     @Path("/bestellung")
     public Response bestellungAbfragen(@Context SecurityContext securityContext) {
@@ -85,12 +88,14 @@ public class PizzaResource {
     }
 
     @GET
+    @Transactional
     @Path("/bestellungen")
     public Response getAllBestellungen(){
         return Response.ok(pizza.getAllBestellungen()).build();
     }
 
     @GET
+    @Transactional
     @Path("/debug")
     public Response get(){
         return Response.ok(pizzaRepo.get()).build();
