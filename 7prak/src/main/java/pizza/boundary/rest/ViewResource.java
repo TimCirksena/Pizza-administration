@@ -7,6 +7,7 @@ import pizza.boundary.acl.PizzaDTO;
 import pizza.boundary.acl.StringDTO;
 import pizza.control.KundenController;
 import pizza.control.KundenInterface;
+import pizza.control.PizzaInterface;
 import pizza.entity.Pizza;
 
 import javax.annotation.security.RolesAllowed;
@@ -18,11 +19,18 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import java.util.ArrayList;
+import java.util.List;
+
 @Path("/view")
 @ApplicationScoped
 @Produces(MediaType.TEXT_HTML)
 @Consumes(MediaType.TEXT_HTML)
 public class ViewResource {
+    @Inject
+    Template pizzaList_view;
+    @Inject
+    PizzaInterface pizzaInterface;
     @Inject
     Template login_view;
 
@@ -34,6 +42,16 @@ public class ViewResource {
 
     @Inject
     Template pizzaBestellen_view;
+
+    @GET
+    @Path("/pizzaList")
+    @Transactional
+    public TemplateInstance getPizzaList(){
+        //List<String> stringList = new ArrayList<>();
+        //stringList.add("hi");
+        //stringList.add("moin");
+        return pizzaList_view.data("pizzas",pizzaInterface.pizzenAbfragen());
+    }
 
     @GET
     @Path("/login")

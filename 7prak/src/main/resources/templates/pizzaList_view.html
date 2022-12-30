@@ -1,0 +1,24 @@
+{!@java.util.ArrayList<pizza.boundary.acl.PizzaDTO> pizzas}
+{@pizza.boundary.acl.PizzaDTO pizza}
+{@java.util.List<String> st!}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Menü</title>
+</head>
+    <body>
+    <a href="/view/menu">
+        <button type="submit">Zurück</button>
+    </a>
+    <br>
+    <h1>Unser Menü</h1>
+    <ul>
+        {#for pizza in pizzas}
+            <li>{pizza.pizzaId}. {pizza.name} {pizza.groesse} {pizza.beschreibung} {pizza.preis} € </li>
+        {/for}
+    </ul>
+    </body>
+</html>
