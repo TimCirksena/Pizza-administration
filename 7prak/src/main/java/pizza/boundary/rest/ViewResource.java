@@ -23,12 +23,29 @@ import javax.ws.rs.core.SecurityContext;
 @Produces(MediaType.TEXT_HTML)
 @Consumes(MediaType.TEXT_HTML)
 public class ViewResource {
+    @Inject
+    Template login_view;
+
+    @Inject
+    Template register_view;
 
     @Inject
     Template mainMenu_view;
 
     @Inject
     Template pizzaBestellen_view;
+
+    @GET
+    @Path("/login")
+    public TemplateInstance getLogin(){
+        return login_view.instance();
+    }
+
+    @GET
+    @Path("/register")
+    public TemplateInstance getRegister(){
+        return register_view.instance();
+    }
 
     @GET
     @Path("/menu")
