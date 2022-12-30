@@ -18,9 +18,29 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-
+@Path("/view")
 @ApplicationScoped
 @Produces(MediaType.TEXT_HTML)
 @Consumes(MediaType.TEXT_HTML)
 public class ViewResource {
+
+    @Inject
+    Template mainMenu_view;
+
+    @Inject
+    Template pizzaBestellen_view;
+
+    @GET
+    @Path("/menu")
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance getMainMenu() {
+        return mainMenu_view.data("lol");
+    }
+
+    @GET
+    @Path("/bestellen")
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance getBestellenView() {
+        return pizzaBestellen_view.data("lol");
+    }
 }
