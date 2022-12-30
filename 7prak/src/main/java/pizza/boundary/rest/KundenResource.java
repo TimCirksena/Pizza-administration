@@ -27,6 +27,9 @@ public class KundenResource {
     @Inject
     Template test;
 
+    @Inject
+    Template kunde;
+
     @GET
     @Path("/qute")
     @Produces(MediaType.TEXT_HTML)
@@ -38,6 +41,15 @@ public class KundenResource {
         pizzaDTO.groesse = 88.8f;
         return test.data(pizzaDTO);
     }
+    @GET
+    @Path("/qute/kunde")
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance getKunde(@Context SecurityContext securityContext) {
+        String name = "Stefan Cockus";//securityContext.getUserPrincipal().getName();
+        return kunde.data("name", name);
+    }
+
+
 
     @GET
     @Transactional
