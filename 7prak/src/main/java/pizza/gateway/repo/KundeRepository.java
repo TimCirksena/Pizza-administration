@@ -2,6 +2,7 @@ package pizza.gateway.repo;
 
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.runtime.StartupEvent;
+import pizza.boundary.acl.AdresseDTO;
 import pizza.boundary.acl.BestellungDTO;
 import pizza.boundary.acl.ReturnKundeDTO;
 import pizza.boundary.exception.NoActiveBestellungException;
@@ -84,6 +85,14 @@ public class KundeRepository implements KundenCatalog, KundenCatalogIntern {
     public Long getKundenIdByUsername(String username) {
         Kunde k = Kunde.find("username", username).firstResult();
         return k.id;
+    }
+
+    @Override
+    public ReturnKundeDTO addAdresse(Long kundenID, AdresseDTO adresse) {
+        Kunde k = Kunde.findById(kundenID);
+        k.setAdresse(new Adresse(adresse.plz, adresse.ort, adresse.strasseUndHausnummer));
+        k.getAdresse().persist();
+        return new ReturnKundeDTO(k);
     }
 
     @Override

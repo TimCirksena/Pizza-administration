@@ -1,5 +1,6 @@
 package pizza.entity;
 
+import pizza.boundary.acl.AdresseDTO;
 import pizza.boundary.acl.BestellungDTO;
 import pizza.boundary.acl.ReturnKundeDTO;
 
@@ -14,4 +15,5 @@ public interface KundenCatalog {
      * diese methode darf nur mit dem namen des angemeldeten users aufgerufen werden, sonst entsteht eine sicherheitslücke
      * */
     Long getKundenIdByUsername(String username);
+    ReturnKundeDTO addAdresse(Long kundenID, AdresseDTO adresse);
 }

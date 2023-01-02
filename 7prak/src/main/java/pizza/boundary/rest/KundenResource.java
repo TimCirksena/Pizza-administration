@@ -2,6 +2,7 @@ package pizza.boundary.rest;
 
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
+import pizza.boundary.acl.AdresseDTO;
 import pizza.boundary.acl.POSTKundeDTO;
 import pizza.boundary.acl.PizzaDTO;
 import pizza.boundary.acl.StringDTO;
@@ -78,5 +79,12 @@ public class KundenResource {
         } else {
             return Response.status(404, "Kunde nicht vorhanden").build();
         }
+    }
+
+    @PATCH
+    @Transactional
+    @RolesAllowed("kunde")
+    public Response addAdresse(@Context SecurityContext securityContext, AdresseDTO adresse){
+        return Response.ok(controller.addAdresse(controller.getKundenIdByUsername(securityContext.getUserPrincipal().getName()), adresse)).build();
     }
 }
