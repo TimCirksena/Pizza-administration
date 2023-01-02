@@ -9,20 +9,29 @@
 </a>
 <br>
 <h1>Pizza bestellen</h1>
-<br>
-<div>
-    <input maxlength="8" type="number">
-    Pizza Nummer
-</div>
-<br>
-<br>
-<div>
-    <input maxlength="2" type="number">
-    Pizza Menge
-</div>
 
 <br>
 <br>
-<button type="submit">Bestellen</button>
+<form id="former" action="/view/bestellen" method="post" >
+    <label for="pNummer">Pizza Nummer:</label>
+    <input type="number" min="0" id="pNummer" name="pNummer"><br><br>
+    <label for="pMenge">Pizza Menge:</label>
+    <input type="number" min="0" id="pMenge" name="pMenge"><br><br>
+    <input type="button" value="Submit" onclick="submitForm()">
+</form>
+<script type="text/javascript">
+    function submitForm(){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/view/bestellen", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        var formData = new FormData(document.querySelector('form'))
+        var obj = new Object();
+        obj.pMenge = formData.get("pMenge");
+        obj.pNummer = formData.get("pNummer");
+
+        var jsonString = JSON.stringify(obj);
+        xhr.send(jsonString);
+    }
+</script>
 </body>
 </html>

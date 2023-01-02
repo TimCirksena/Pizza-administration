@@ -12,12 +12,10 @@ import pizza.entity.Pizza;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.resource.spi.ConfigProperty;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.*;
 
 @Path("/kunden")
 @Produces(MediaType.APPLICATION_JSON)

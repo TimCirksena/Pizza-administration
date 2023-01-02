@@ -2,9 +2,8 @@ package pizza.boundary.view;
 
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
-import pizza.boundary.acl.POSTKundeDTO;
-import pizza.boundary.acl.PizzaDTO;
-import pizza.boundary.acl.StringDTO;
+import org.jboss.logging.annotations.Pos;
+import pizza.boundary.acl.*;
 import pizza.control.KundenController;
 import pizza.control.KundenInterface;
 import pizza.control.PizzaInterface;
@@ -31,6 +30,9 @@ public class ViewResource {
     Template pizzaList_view;
     @Inject
     PizzaInterface pizzaInterface;
+
+    @Inject
+    KundenInterface kundenInterface;
     @Inject
     Template login_view;
 
@@ -74,11 +76,24 @@ public class ViewResource {
         return mainMenu_view.data("lol");
     }
 
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/bestellen")
+    @RolesAllowed("kunde")
+    @Transactional
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response postBestellenView(@Context SecurityContext securityContext, HtmlPizzaDTO htmlPizzaDTO) {
+        POSTBestellpostenDTO postBestellpostenDTO = new POSTBestellpostenDTO(htmlPizzaDTO);
+        System.out.println(postBestellpostenDTO.toString());
+        return Response.ok(pizzaInterface.addBestellposten(postBestellpostenDTO,kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName()))).build();
+
+    }
     @GET
     @Path("/bestellen")
     @RolesAllowed("kunde")
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getBestellenView() {
-        return pizzaBestellen_view.data("lol");
+            return pizzaBestellen_view.instance();
+
     }
 }
