@@ -18,9 +18,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
-import io.quarkus.qute.TemplateInstance;
-import io.quarkus.qute.CheckedTemplate;
-
 @ApplicationScoped
 @Path("/pizza")
 @Produces(MediaType.APPLICATION_JSON)

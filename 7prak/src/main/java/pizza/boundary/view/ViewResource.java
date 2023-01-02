@@ -1,4 +1,4 @@
-package pizza.boundary.rest;
+package pizza.boundary.view;
 
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
