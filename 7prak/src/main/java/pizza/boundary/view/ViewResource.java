@@ -45,6 +45,7 @@ public class ViewResource {
 
     @GET
     @Path("/pizzaList")
+    @RolesAllowed("kunde")
     @Transactional
     public TemplateInstance getPizzaList(){
         //List<String> stringList = new ArrayList<>();
@@ -67,6 +68,7 @@ public class ViewResource {
 
     @GET
     @Path("/menu")
+    @RolesAllowed("kunde")
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getMainMenu() {
         return mainMenu_view.data("lol");
@@ -74,6 +76,7 @@ public class ViewResource {
 
     @GET
     @Path("/bestellen")
+    @RolesAllowed("kunde")
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getBestellenView() {
         return pizzaBestellen_view.data("lol");
