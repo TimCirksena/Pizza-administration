@@ -33,6 +33,9 @@ public class Kunde extends PanacheEntity {
     @OneToMany
     private List<Bestellung> bestellungList;
 
+    @OneToOne
+    private Adresse adresse;
+
     public String getUsername() {
         return username;
     }
@@ -65,6 +68,11 @@ public class Kunde extends PanacheEntity {
         this.bestellungList = bestellungList;
     }
 
+    public void setAdresse(Adresse adresse) {
+        this.adresse = adresse;
+    }
 
-
+    public Adresse getAdresse() {
+        return adresse;
+    }
 }

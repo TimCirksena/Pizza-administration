@@ -1,5 +1,6 @@
 package pizza.control;
 
+import pizza.boundary.acl.AdresseDTO;
 import pizza.boundary.acl.ReturnKundeDTO;
 import pizza.entity.Bestellung;
 import pizza.entity.KundenCatalog;
@@ -30,4 +31,11 @@ public class KundenController implements KundenInterface{
     public Long getKundenIdByUsername(String username) {
         return kundenCatalog.getKundenIdByUsername(username);
     }
+
+    @Override
+    public ReturnKundeDTO addAdresse(Long kundenID, AdresseDTO adresse) {
+        return kundenCatalog.addAdresse(kundenID, adresse);
+    }
+
+
 }
