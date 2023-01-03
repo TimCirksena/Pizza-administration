@@ -13,6 +13,7 @@ import pizza.entity.Pizza;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.print.attribute.standard.Media;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -80,9 +81,23 @@ public class ViewResource {
         return register_view.instance();
     }
 
+    @POST
+    @Path("/register")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response postRegister(@Context SecurityContext securityContext, HtmlKundeDTO htmlKundeDTO){
+        //return Response.ok(kundenInterface.addKunde(htmlKundeDTO.uname, htmlKundeDTO.psw, "kunde")).build();
+        kundenInterface.addKunde(htmlKundeDTO.uname, htmlKundeDTO.psw, "kunde");
+        AdresseDTO adresseDTO = new AdresseDTO();
+        adresseDTO.plz = htmlKundeDTO.pl;
+        adresseDTO.ort = htmlKundeDTO.or;
+        adresseDTO.strasseUndHausnummer = htmlKundeDTO.struH;
+        return Response.ok(kundenInterface.addAdresse(kundenInterface.getKundenIdByUsername(htmlKundeDTO.uname), adresseDTO)).build();
+    }
+
     @GET
     @Path("/menu")
-    @RolesAllowed("kunde")
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getMainMenu() {
         return mainMenu_view.data("lol");
@@ -98,7 +113,6 @@ public class ViewResource {
         POSTBestellpostenDTO postBestellpostenDTO = new POSTBestellpostenDTO(htmlPizzaDTO);
         System.out.println(postBestellpostenDTO.toString());
         return Response.ok(pizzaInterface.addBestellposten(postBestellpostenDTO,kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName()))).build();
-
     }
     @GET
     @Path("/bestellen")

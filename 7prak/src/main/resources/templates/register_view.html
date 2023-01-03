@@ -5,27 +5,83 @@
     <title>Register</title>
 </head>
 <body>
-    <div class="all">
-        <div class="lable">
+<form id="formerr" action="/view/register" method="post">
+    <div class="kunde">
+        <div class="lableR">
             <h1>Register</h1>
         </div>
         <div class="name">
-            <label for="uname"><b>Username</b></label>
+            <label for="uname"><b>Benutzername</b></label>
             <br>
-            <input type="text" placeholder="Enter Username" name="uname" required>
+            <input type="text" placeholder="Benutzername eingeben" name="uname" id="uname" required>
         </div>
         <div class="password">
-            <label for="psw"><b>Password</b></label>
+            <label for="psw"><b>Passwort</b></label>
             <br>
-            <input type="password" placeholder="Enter Password" name="psw" required>
-        </div>
-        <div class="button">
-            <a href="/view/menu">
-                <button type="submit">Register</button>
-            </a>
-            <br>
-            <p><a href="/view/login">You have an account?</a></p>
+            <input type="password" placeholder="Passwort eingeben" name="psw" id="psw" required>
         </div>
     </div>
+    <div>
+        <div class="lableA">
+            <h2>Adresse</h2>
+        </div>
+        <div class="plz">
+            <label for="pl"><b>Postleitzahl</b></label>
+            <br>
+            <input type="text" placeholder="Postleitzahl" name="pl" id="pl" required>
+        </div>
+        <div class="ort">
+            <label for="or"><b>Ort</b></label>
+            <br>
+            <input type="text" placeholder="Ort" name="or" id="or" required>
+        </div>
+        <div class="struHausnummer">
+            <label for="struH"><b>Straße und Hausnummer</b></label>
+            <br>
+            <input type="text" placeholder="Straße und Hausnummer" name="struH" id="struH" required>
+        </div>
+    </div>
+    <div class="button">
+        <input type="button" value="register" onclick="submitRegisterForm()">
+        <br>
+        <!-- <p><a href="/view/login">You have an account?</a></p> -->
+    </div>
+
+</form>
+<br>
+<div  id="onClickVisible" hidden="hidden" style="color: green"><p>Kunde wurde angelegt!</p></div>
+<script type="text/javascript">
+    let delayTime = 5000;
+    var div = document.getElementById('onClickVisible');
+
+    function submitRegisterForm(){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/view/register", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        var dataForm = new FormData(document.querySelector('form'));
+        var obj = new Object();
+        obj.uname = dataForm.get("uname");
+        obj.psw = dataForm.get("psw");
+        obj.pl = dataForm.get("pl");
+        obj.or = dataForm.get("or");
+        obj.struH = dataForm.get("struH");
+        var jsonString = JSON.stringify(obj);
+
+        xhr.send(jsonString);
+
+        div.style.display = 'inline';
+        setInterval(delayTime);
+        delayTime = 5000;
+    }
+
+
+    setInterval(
+        function()
+        {
+            div.style.display = 'none';
+        }, delayTime
+
+    )
+</script>
 </body>
 </html>
