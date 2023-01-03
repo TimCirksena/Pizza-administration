@@ -67,7 +67,20 @@ public class ViewResource {
     public TemplateInstance getBestellungList(@Context SecurityContext securityContext) throws NoActiveBestellungException {
         return aktuelleBestellung_view.data("bestellung",pizzaInterface.bestellungAbfragen(kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName())));
     }
-
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/listBestellung")
+    @RolesAllowed("kunde")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response postBestellungList(@Context SecurityContext securityContext, boolean ja){
+        try{
+            System.out.println("JAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            return Response.ok(pizzaInterface.bestellungAbschicken(kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName()))).build();
+        }catch (NoActiveBestellungException e){//hier tims exception abfangen
+            return Response.noContent().build();
+        }
+    }
 
     @GET
     @Path("/login")
