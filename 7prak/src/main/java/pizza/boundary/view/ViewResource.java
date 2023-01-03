@@ -4,6 +4,7 @@ import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import org.jboss.logging.annotations.Pos;
 import pizza.boundary.acl.*;
+import pizza.boundary.exception.NoActiveBestellungException;
 import pizza.control.KundenController;
 import pizza.control.KundenInterface;
 import pizza.control.PizzaInterface;
@@ -45,6 +46,9 @@ public class ViewResource {
     @Inject
     Template pizzaBestellen_view;
 
+    @Inject
+    Template aktuelleBestellung_view;
+
     @GET
     @Path("/pizzaList")
     @RolesAllowed("kunde")
@@ -55,6 +59,14 @@ public class ViewResource {
         //stringList.add("moin");
         return pizzaList_view.data("pizzas",pizzaInterface.pizzenAbfragen());
     }
+    @GET
+    @Path("/listBestellung")
+    @RolesAllowed("kunde")
+    @Transactional
+    public TemplateInstance getBestellungList(@Context SecurityContext securityContext) throws NoActiveBestellungException {
+        return aktuelleBestellung_view.data("bestellung",pizzaInterface.bestellungAbfragen(kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName())));
+    }
+
 
     @GET
     @Path("/login")

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
@@ -17,9 +18,18 @@
     <input type="number" min="0" id="pNummer" name="pNummer"><br><br>
     <label for="pMenge">Pizza Menge:</label>
     <input type="number" min="0" id="pMenge" name="pMenge"><br><br>
-    <input type="button" value="Submit" onclick="submitForm()">
+    <input type="button" value="Pizza hinzufügen" onclick="submitForm()">
 </form>
+<a href="/view/listBestellung">
+    <button type="submit">Bestellung ansehen</button>
+</a>
+<br>
+<div  id="onClickVisible" hidden="hidden" style="color: green"><p>Pizza wurde bestellt!</p></div>
+
 <script type="text/javascript">
+    let delayTime = 5000;
+    var div = document.getElementById('onClickVisible');
+
     function submitForm(){
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/view/bestellen", true);
@@ -31,7 +41,19 @@
 
         var jsonString = JSON.stringify(obj);
         xhr.send(jsonString);
+
+
+        div.style.display = 'inline';
+        setInterval(delayTime);
+        delayTime = 5000;
     }
+    setInterval(
+        function()
+        {
+            div.style.display = 'none';
+        }, delayTime
+
+    )
 </script>
 </body>
 </html>

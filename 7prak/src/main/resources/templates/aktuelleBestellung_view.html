@@ -5,6 +5,17 @@
     <title>Title</title>
 </head>
 <body>
+<a href="/view/menu">
+    <button type="submit">Zurück</button>
+</a>
+<br>
+<h1>Ihre Bestellungen</h1>
+<ul>
 
+        <li>{bestellung.bestellungId}. {bestellung.bestellungFertig} </li>
+        {#for bestellposten in bestellung.bestellpostenDTOList}
+            <li>Menge: {bestellposten.menge} Name: {bestellposten.pizzaDTO.name} Preis: {bestellposten.pizzaDTO.preis} €</li>
+            {/for}
+</ul>
 </body>
 </html>
