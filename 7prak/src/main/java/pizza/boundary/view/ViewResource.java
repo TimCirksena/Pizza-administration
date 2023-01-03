@@ -4,6 +4,7 @@ import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import org.jboss.logging.annotations.Pos;
 import pizza.boundary.acl.*;
+import pizza.boundary.exception.BestellpostenNonexistentException;
 import pizza.boundary.exception.NoActiveBestellungException;
 import pizza.control.KundenController;
 import pizza.control.KundenInterface;
@@ -21,6 +22,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Path("/view")
@@ -46,6 +48,8 @@ public class ViewResource {
 
     @Inject
     Template pizzaBestellen_view;
+    @Inject
+    Template bestellpostenAendern_view;
 
     @Inject
     Template aktuelleBestellung_view;
@@ -133,6 +137,51 @@ public class ViewResource {
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getBestellenView() {
             return pizzaBestellen_view.instance();
+    }
+    @GET
+    @Path("/bestellposten")
+    @RolesAllowed("kunde")
+    public TemplateInstance getBestellpostenAendernView(){
+        return bestellpostenAendern_view.instance();
+    }
 
+    @GET
+    @Path("/bestellposten/{id}")
+    @RolesAllowed("kunde")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public HtmlPizzaDTO getBestellpostenByIdZurAenderung(@PathParam("id") long id, @Context SecurityContext securityContext){
+        try {
+            BestellungDTO bestellungDTO = pizzaInterface.bestellungAbfragen(kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName()));
+            Collection<ReturnBestellpostenDTO> bestellpostenDTOList = bestellungDTO.bestellpostenDTOList;
+            for (ReturnBestellpostenDTO b : bestellpostenDTOList){
+
+                if(b.postenId == id) {
+                    HtmlPizzaDTO bestellposten = new HtmlPizzaDTO();
+                    bestellposten.pMenge = b.menge;
+                    bestellposten.pNummer = Math.toIntExact(b.pizzaDTO.pizzaId);
+                    return bestellposten;
+                }
+            }
+            return null;
+        } catch (NoActiveBestellungException e){
+            return null;
+        }
+
+    }
+
+    @PATCH
+    @Path("/bestellposten/{id}")
+    @RolesAllowed("kunde")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response patchBestellposten(@Context SecurityContext securityContext, @PathParam("id") long bestellpostenID,POSTBestellpostenDTO postBestellpostenDTO){
+        Long kundenID = kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName());
+        try{
+            return Response.ok(pizzaInterface.bestellpostenAendern(kundenID, bestellpostenID, postBestellpostenDTO)).build();
+        } catch (BestellpostenNonexistentException e){
+            return Response.notModified().build();
+        }
     }
 }

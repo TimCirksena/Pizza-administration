@@ -2,9 +2,135 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Bestellposten Ändern</title>
 </head>
+<style>
+    * {
+        font-family: sans-serif;
+    }
+</style>
 <body>
+<a href="/view/menu">
+    <button type="submit">Zurück</button>
+</a>
+<br>
+<h1>Bestellposten ändern</h1>
+<form id="bPostenAbfragen" >
+    <label for="bNummer">Bestellposten Nummer:</label>
+    <input type="number" min="0" id="bNummer" name="bNummer"><br><br>
+    <input type="button" value="Bestellposten laden" onclick="getBestellpostenbyId()">
+</form>
 
+<br>
+<div  id="bPostenAbfragenErfolg" hidden="hidden" style="color: green"><p>bestellposten geladen</p></div>
+<div  id="bPostenAbfragenFehler" hidden="hidden" style="color: red"><p>bestellposten existiert nicht</p></div>
+<br>
+<form id="bPostenAendern">
+    <label for="pNummer">Pizza Nummer:</label>
+    <input type="number" min="0" id="pNummer" name="pNummer"><br><br>
+    <label for="pMenge">Pizza Menge:</label>
+    <input type="number" min="0" id="pMenge" name="pMenge"><br><br>
+    <input type="button" value="Bestellposten aendern" onclick="patchBestellposten()">
+</form>
+<div  id="bPostenAendernErfolg"  style="color: green; display: none"><p>bestellposten geaendert</p></div>
+<div  id="bPostenAendernFehler"  style="color: red; display: none"><p>Aenderung fehlgeschlagen</p></div>
+<br><br>
+<div><p id="successJson"></p></div>
+<script type="text/javascript">
+    //let delayTime = 5000;
+   // var div = document.getElementById('onClickVisible');
+
+    function getBestellpostenbyId(){
+        var formData = new FormData(document.getElementById('bPostenAbfragen'));
+        var bestellPostenId = formData.get('bNummer');
+        var url = "/view/bestellposten/";
+        url += bestellPostenId;
+
+        console.log("die url: " + url);
+
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                var myArr = JSON.parse(this.responseText);
+                bestellpostenListener(myArr);
+            }
+        };
+        request.open("GET",url,true);
+        request.send();
+    }
+
+    function bestellpostenListener(bestellposten){
+        console.log(bestellposten);
+        //console.log(bestellposten[0]);
+        //console.log(bestellposten[1]);
+        document.getElementById('pNummer').value = bestellposten["pNummer"];
+        document.getElementById('pMenge').value = bestellposten["pMenge"];
+        console.log("bestellposten geladen");
+    }
+
+    function patchBestellposten(){
+
+        var pizzaNr = document.getElementById('pNummer').value;
+        var pMenge = document.getElementById('pMenge').value;
+        var bestellPostenNr = document.getElementById('bNummer').value;
+        console.log("patchBestellposten: " + pizzaNr + " " + pMenge + " " + bestellPostenNr);
+        var xmlHttp = new XMLHttpRequest();
+        var url = "/view/bestellposten/";
+        url += bestellPostenNr;
+        xmlHttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                var myArr = JSON.parse(this.responseText);
+                patchBestellpostenCallback(myArr);
+            } else if(this.readyState === 4 && this.status === 304){
+                document.getElementById("bPostenAendernFehler").style.display = "inline";
+                setTimeout(function (){
+                    document.getElementById("bPostenAendernFehler").style.display = "none";
+                },2000);
+            }
+        };
+        xmlHttp.open("PATCH", url, true);
+        xmlHttp.setRequestHeader('Content-Type', 'application/json');
+        var obj = new Object();
+        obj.menge = pMenge;
+        obj.pizzaID = pizzaNr;
+        xmlHttp.send(JSON.stringify(obj));
+        console.log(JSON.stringify(obj));
+        console.log("bestellposten gepatcht");
+    }
+
+    function patchBestellpostenCallback(bPosten){
+        document.getElementById("successJson").style.display = "inline";
+        document.getElementById("successJson").innerHTML =
+            "Bestellposten " + bPosten.postenId + " erfolgreich geändert: " + bPosten.menge + "x" + bPosten.pizzaDTO.name;
+        setTimeout(function (){
+            document.getElementById("successJson").style.display = "none";
+        },2000);
+    }
+/*
+    function submitForm(){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/view/bestellen", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        var formData = new FormData(document.querySelector('form'))
+        var obj = new Object();
+        obj.pMenge = formData.get("pMenge");
+        obj.pNummer = formData.get("pNummer");
+
+        var jsonString = JSON.stringify(obj);
+        xhr.send(jsonString);
+
+
+        div.style.display = 'inline';
+        setInterval(delayTime);
+        delayTime = 5000;
+    }
+    setInterval(
+        function()
+        {
+            div.style.display = 'none';
+        }, delayTime
+
+    )*/
+</script>
 </body>
 </html>

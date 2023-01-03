@@ -3,6 +3,7 @@ package pizza.boundary.rest;
 import io.quarkus.qute.Location;
 import io.quarkus.qute.Template;
 import pizza.boundary.acl.POSTBestellpostenDTO;
+import pizza.boundary.exception.BestellpostenNonexistentException;
 import pizza.boundary.exception.NoActiveBestellungException;
 import pizza.control.KundenInterface;
 import pizza.control.PizzaInterface;
@@ -84,7 +85,12 @@ public class PizzaResource {
     @Path("/bestellung/{bestellpostenID}")
     public Response patchBestellungsposten(@Context SecurityContext securityContext, @PathParam("bestellpostenID") long bestellpostenID, POSTBestellpostenDTO postBestellpostenDTO){
         Long kundenID = kundenInterface.getKundenIdByUsername(securityContext.getUserPrincipal().getName());
-        return Response.ok(pizza.bestellpostenAendern(kundenID, bestellpostenID, postBestellpostenDTO)).build();
+        try{
+            return Response.ok(pizza.bestellpostenAendern(kundenID, bestellpostenID, postBestellpostenDTO)).build();
+        } catch (BestellpostenNonexistentException e){
+            return Response.notModified().build();
+        }
+
     }
 
     @GET

@@ -8,6 +8,7 @@ import pizza.boundary.acl.BestellungDTO;
 import pizza.boundary.acl.POSTBestellpostenDTO;
 import pizza.boundary.acl.PizzaDTO;
 import pizza.boundary.acl.ReturnBestellpostenDTO;
+import pizza.boundary.exception.BestellpostenNonexistentException;
 import pizza.boundary.exception.NoActiveBestellungException;
 import pizza.entity.*;
 
@@ -84,9 +85,22 @@ public class PizzaRepository implements PizzaCatalog {
     }
 
     @Override
-    public ReturnBestellpostenDTO bestellpostenAendern(long kundenId, long bestellpostenId, POSTBestellpostenDTO bestellpostenDTO) {
-        Bestellposten bestellposten = new Bestellposten(bestellpostenId, bestellpostenDTO.menge, Pizza.findById(bestellpostenDTO.pizzaID));
-        return new ReturnBestellpostenDTO(bestellposten);
+    public ReturnBestellpostenDTO bestellpostenAendern(long kundenId, long bestellpostenId, POSTBestellpostenDTO bestellpostenDTO) throws BestellpostenNonexistentException {
+        //Bestellposten bestellposten = new Bestellposten(bestellpostenId, bestellpostenDTO.menge, Pizza.findById(bestellpostenDTO.pizzaID));
+        Bestellung aktiveBestellung = kundenCatalogIntern.getAktiveBestellungById(kundenId);
+        List<Bestellposten> postenList = aktiveBestellung.getBestellposten();
+        ReturnBestellpostenDTO editedBestellposten = null;
+        for (Bestellposten bposten : postenList){
+            if(bposten.getPostenID() == bestellpostenId){
+                bposten.setMenge(bestellpostenDTO.menge);
+                bposten.setPizza(Pizza.findById(bestellpostenDTO.pizzaID));
+                editedBestellposten = new ReturnBestellpostenDTO(bposten);
+            }
+        }
+        if(editedBestellposten == null){
+            throw new BestellpostenNonexistentException("bestellposten der id " + bestellpostenId + " existiert nicht");
+        }
+        return editedBestellposten;
     }
 
     @Override

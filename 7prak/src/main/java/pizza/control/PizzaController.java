@@ -4,6 +4,7 @@ import pizza.boundary.acl.BestellungDTO;
 import pizza.boundary.acl.POSTBestellpostenDTO;
 import pizza.boundary.acl.PizzaDTO;
 import pizza.boundary.acl.ReturnBestellpostenDTO;
+import pizza.boundary.exception.BestellpostenNonexistentException;
 import pizza.boundary.exception.NoActiveBestellungException;
 import pizza.entity.PizzaCatalog;
 
@@ -33,7 +34,7 @@ public class PizzaController implements PizzaInterface{
         return pizzaRepo.pizzaAbfragen(pizzaId);
     }
 
-    public ReturnBestellpostenDTO bestellpostenAendern(long kundenId, long bestellpostenId, POSTBestellpostenDTO bestellpostenDTO) {
+    public ReturnBestellpostenDTO bestellpostenAendern(long kundenId, long bestellpostenId, POSTBestellpostenDTO bestellpostenDTO) throws BestellpostenNonexistentException {
         return pizzaRepo.bestellpostenAendern(kundenId,bestellpostenId,bestellpostenDTO);
     }
 

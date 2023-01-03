@@ -6,6 +6,9 @@ public class POSTBestellpostenDTO {
     public int menge;
     public long pizzaID;
 
+    public POSTBestellpostenDTO() {
+    }
+
     public POSTBestellpostenDTO(HtmlPizzaDTO htmlPizzaDTO){
         this.menge = htmlPizzaDTO.pMenge;
         long idz = htmlPizzaDTO.pNummer;
